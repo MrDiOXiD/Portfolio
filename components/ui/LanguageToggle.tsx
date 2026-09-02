@@ -9,8 +9,7 @@ export function LanguageToggle({ href, label }: { href: string; label: string })
     <Link
       href={href}
       hrefLang={href === "/" ? "fa" : "en"}
-      className="fixed top-4 z-40 flex items-center gap-2 rounded-full border border-hairline bg-panel/80 px-3.5 py-2 text-xs font-bold text-mist backdrop-blur-md transition-colors hover:border-turquoise/70 hover:text-turquoise end-4"
-    >
+className="fixed top-4 z-40 flex items-center gap-2 rounded-full border border-hairline bg-panel/80 px-3.5 py-2 text-xs font-bold text-mist backdrop-blur-md transition-colors hover:border-turquoise/70 hover:text-turquoise end-4 md:end-12"    >
       <Languages size={14} />
       {label}
     </Link>

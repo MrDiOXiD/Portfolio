@@ -1,31 +1,28 @@
 import Image from "next/image";
 import { ArrowDownLeft, Mail } from "lucide-react";
-import { profile } from "@/content/profile";
+import type { Profile, UiStrings } from "@/content/profile";
 import { BLUR_DATA_URL } from "@/lib/blur";
 
-// This is a plain Server Component — no "use client", no framer-motion.
-// The very first thing a visitor sees should not have to wait on JS
-// hydration to become visible, so every entrance effect here is a CSS
-// @keyframes animation (see tailwind.config.ts: fade-up / fade-scale /
-// fade-in). CSS animations start the moment the browser paints, whether
-// or not React has hydrated yet — that's the whole optimization.
+// Plain Server Component — no "use client". The very first thing a
+// visitor sees should not have to wait on JS hydration to become
+// visible, so every entrance effect here is a CSS @keyframes animation
+// (see tailwind.config.ts: fade-up / fade-scale / fade-in). Locale is
+// resolved server-side (via the /(fa) and /(en) route groups) and passed
+// in as plain props, so this stays fully static HTML — no client state.
 
-export function Hero() {
+export function Hero({ profile, ui }: { profile: Profile; ui: UiStrings }) {
   return (
     <section
       id="hero"
       className="relative flex min-h-[100svh] flex-col justify-center overflow-hidden px-6 pb-24 pt-32 md:px-16"
     >
       <div className="mx-auto grid w-full max-w-6xl grid-cols-1 items-center gap-14 md:grid-cols-[1.2fr_0.8fr]">
-        {/* متن اصلی */}
         <div>
           <div className="mb-6 inline-flex items-center gap-3 rounded-full border border-hairline bg-panel2/70 px-4 py-1.5 motion-safe:animate-fade-up">
             <span className="h-2 w-2 animate-pulse rounded-full bg-turquoise" />
             <span className="text-sm text-muted">{profile.status}</span>
           </div>
 
-          {/* هدینگ اصلی صفحه — عمداً بدون تأخیر انیمیشنی زیاد، چون بزرگ‌ترین
-              عنصر بالای تاشدگی است و معیار LCP روی همین اندازه‌گیری می‌شود. */}
           <h1 className="max-w-2xl text-4xl font-extrabold leading-[1.28] tracking-tight text-mist sm:text-5xl md:text-6xl">
             {profile.heroHeadline.map((line, i) => (
               <span
@@ -50,12 +47,12 @@ export function Hero() {
             className="mt-10 flex flex-wrap items-center gap-4 motion-safe:animate-fade-up"
           >
             <a href="#about" className="btn-primary">
-              بیشتر درباره‌ام بخوان
+              {ui.readMore}
               <ArrowDownLeft size={16} />
             </a>
             <a href={`mailto:${profile.contact.email}`} className="btn-ghost">
               <Mail size={16} />
-              تماس مستقیم
+              {ui.directContact}
             </a>
           </div>
 
@@ -68,9 +65,6 @@ export function Hero() {
           </p>
         </div>
 
-        {/* پرتره — بزرگ‌ترین قاب صفحه و کاندید اصلی LCP، برای همین:
-            - priority دارد (پیش‌بارگذاری، بدون lazy loading)
-            - انیمیشن ورودش کوتاه و بدون تأخیر است، نه وابسته به JS */}
         <div
           style={{ animationDelay: "80ms" }}
           className="relative mx-auto aspect-[4/5] w-full max-w-sm motion-safe:animate-fade-scale"
@@ -80,7 +74,7 @@ export function Hero() {
             <div className="relative h-full w-full overflow-hidden rounded-[24px]">
               <Image
                 src="/images/profile.webp"
-                alt={`عکس پروفایل ${profile.name}`}
+                alt={`${ui.profilePhotoAlt} ${profile.name}`}
                 fill
                 priority
                 fetchPriority="high"

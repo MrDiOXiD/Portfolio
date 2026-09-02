@@ -1,7 +1,7 @@
-import { profile } from "@/content/profile";
+import type { Profile } from "@/content/profile";
 import { Reveal } from "@/components/ui/Reveal";
 
-export function NextPlans() {
+export function NextPlans({ profile }: { profile: Profile }) {
   return (
     <section id="next" className="relative px-6 py-28 md:px-16">
       <div className="mx-auto w-full max-w-4xl">

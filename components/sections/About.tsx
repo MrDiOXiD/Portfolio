@@ -1,7 +1,7 @@
-import { profile } from "@/content/profile";
+import type { Profile } from "@/content/profile";
 import { Reveal } from "@/components/ui/Reveal";
 
-export function About() {
+export function About({ profile }: { profile: Profile }) {
   return (
     <section id="about" className="relative px-6 py-28 md:px-16">
       <div className="mx-auto grid w-full max-w-6xl grid-cols-1 gap-16 md:grid-cols-[0.85fr_1.15fr]">

@@ -1,18 +1,12 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import type { UiStrings } from "@/content/profile";
 
-const sections = [
-  { id: "hero", label: "معرفی" },
-  { id: "about", label: "درباره من" },
-  { id: "timeline", label: "مسیر" },
-  { id: "work", label: "کارها" },
-  { id: "gallery", label: "گالری" },
-  { id: "next", label: "برنامه‌ها" },
-  { id: "contact", label: "تماس" },
-];
+const sectionIds = ["hero", "about", "timeline", "work", "gallery", "next", "contact"] as const;
 
-export function SectionNav() {
+export function SectionNav({ ui }: { ui: UiStrings }) {
+  const sections = sectionIds.map((id) => ({ id, label: ui.sectionLabels[id] }));
   const [active, setActive] = useState("hero");
 
   useEffect(() => {
@@ -35,7 +29,7 @@ export function SectionNav() {
 
   return (
     <nav
-      aria-label="پیمایش بخش‌های صفحه"
+      aria-label={ui.navLabel}
       className="fixed inset-y-0 left-4 z-40 hidden flex-col items-center justify-center gap-4 md:flex lg:left-6"
     >
       {sections.map((section) => (

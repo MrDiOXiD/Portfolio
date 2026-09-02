@@ -14,6 +14,8 @@ export default function manifest(): MetadataRoute.Manifest {
     dir: "rtl",
     icons: [
       { src: "/icon.webp", sizes: "64x64", type: "image/webp" },
+      { src: "/icon-192.webp", sizes: "192x192", type: "image/webp" },
+      { src: "/icon-512.webp", sizes: "512x512", type: "image/webp" },
       { src: "/apple-icon.webp", sizes: "180x180", type: "image/webp" },
     ],
   };

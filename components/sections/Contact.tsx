@@ -3,10 +3,10 @@
 import { useState } from "react";
 import { motion } from "framer-motion";
 import { Copy, Check, ArrowUpLeft } from "lucide-react";
-import { profile } from "@/content/profile";
+import type { Profile, UiStrings } from "@/content/profile";
 import { Reveal } from "@/components/ui/Reveal";
 
-export function Contact() {
+export function Contact({ profile, ui }: { profile: Profile; ui: UiStrings }) {
   const [copied, setCopied] = useState(false);
 
   async function copyEmail() {
@@ -34,7 +34,7 @@ export function Contact() {
 
         <Reveal delay={0.12} className="mt-10 flex flex-wrap items-center justify-center gap-4">
           <a href={`mailto:${profile.contact.email}`} className="btn-primary">
-            نوشتن ایمیل
+            {ui.writeEmail}
             <ArrowUpLeft size={16} />
           </a>
           <button type="button" onClick={copyEmail} className="btn-ghost">
@@ -65,7 +65,7 @@ export function Contact() {
         transition={{ duration: 0.6, delay: 0.3 }}
         className="mt-24 text-center text-xs text-muted/70"
       >
-        © {new Date().getFullYear()} {profile.name} — ساخته‌شده با Next.js
+        © {new Date().getFullYear()} {profile.name} — {ui.builtWith}
       </motion.p>
     </section>
   );

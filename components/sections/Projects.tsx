@@ -1,7 +1,7 @@
-import { profile } from "@/content/profile";
+import type { Profile } from "@/content/profile";
 import { Reveal } from "@/components/ui/Reveal";
 
-export function Projects() {
+export function Projects({ profile }: { profile: Profile }) {
   return (
     <section id="work" className="relative px-6 py-28 md:px-16">
       <div className="mx-auto w-full max-w-6xl">

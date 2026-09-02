@@ -1,22 +1,26 @@
 "use client";
 
-import { useCallback, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import Image from "next/image";
 import useEmblaCarousel from "embla-carousel-react";
 import { AnimatePresence, motion } from "framer-motion";
 import { ChevronRight, ChevronLeft, X } from "lucide-react";
-import { profile } from "@/content/profile";
+import type { Locale, Profile, UiStrings } from "@/content/profile";
 import { Reveal } from "@/components/ui/Reveal";
 import { BLUR_DATA_URL } from "@/lib/blur";
 
-export function Gallery() {
+export function Gallery({ profile, ui, locale }: { profile: Profile; ui: UiStrings; locale: Locale }) {
   const [emblaRef, emblaApi] = useEmblaCarousel({
-    direction: "rtl",
+    direction: locale === "fa" ? "rtl" : "ltr",
     align: "start",
     loop: false,
     dragFree: true,
   });
   const [lightbox, setLightbox] = useState<number | null>(null);
+
+  useEffect(() => {
+    emblaApi?.reInit({ direction: locale === "fa" ? "rtl" : "ltr" });
+  }, [emblaApi, locale]);
 
   const scrollPrev = useCallback(() => emblaApi?.scrollPrev(), [emblaApi]);
   const scrollNext = useCallback(() => emblaApi?.scrollNext(), [emblaApi]);
@@ -37,7 +41,7 @@ export function Gallery() {
             <button
               type="button"
               onClick={scrollPrev}
-              aria-label="عکس قبلی"
+              aria-label={ui.prevImage}
               className="rounded-full border border-hairline p-2.5 text-mist transition-colors hover:border-turquoise/70 hover:text-turquoise"
             >
               <ChevronRight size={18} />
@@ -45,7 +49,7 @@ export function Gallery() {
             <button
               type="button"
               onClick={scrollNext}
-              aria-label="عکس بعدی"
+              aria-label={ui.nextImage}
               className="rounded-full border border-hairline p-2.5 text-mist transition-colors hover:border-turquoise/70 hover:text-turquoise"
             >
               <ChevronLeft size={18} />
@@ -108,7 +112,7 @@ export function Gallery() {
               <button
                 type="button"
                 onClick={() => setLightbox(null)}
-                aria-label="بستن"
+                aria-label={ui.closeLightbox}
                 className="absolute -top-4 start-4 rounded-full bg-panel p-2 text-mist"
               >
                 <X size={18} />
