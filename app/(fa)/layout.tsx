@@ -1,19 +1,32 @@
 import type { Metadata, Viewport } from "next";
 import { vazirmatn, jetbrainsMono } from "@/lib/fonts";
+import { siteUrl } from "@/lib/site";
 import { Aurora } from "@/components/ui/Aurora";
 import { ChronoSpine } from "@/components/ui/ChronoSpine";
 import { SectionNav } from "@/components/ui/SectionNav";
-import { profile } from "@/content/profile";
-import "./globals.css";
+import { LanguageToggle } from "@/components/ui/LanguageToggle";
+import { profiles, uiStrings } from "@/content/profile";
+import "../globals.css";
 
-const siteUrl = "https://heydariamir.ir";
+const profile = profiles.fa;
+const ui = uiStrings.fa;
 
+// This is a separate ROOT layout (its own <html>/<body>) from the (en)
+// group's layout — Next.js supports multiple root layouts via route
+// groups specifically for this case: the default locale (fa) is served
+// with no URL prefix at "/", English is served at "/en". Search engines
+// see two fully server-rendered, independently-crawlable documents with
+// correct <html lang>/dir, canonical, and hreflang — no client JS, no
+// redirect, no locale flicker.
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
   title: `${profile.name} — ${profile.role}`,
   description: profile.googleIndexDescription,
-  keywords: [profile.name, profile.role, "Next.js", "Full-Stack Developer", "پورتفولیو", "توسعه‌دهنده فول‌استک" , "NestJs","typescript","javascript","امیر محمد حیدری","امیر حیدری","برنامه نویس","طراح وب"],
-  alternates: { canonical: "/" },
+  keywords: [profile.name, profile.role, "Next.js", "Full-Stack Developer", "پورتفولیو", "توسعه‌دهنده فول‌استک", "NestJs", "typescript", "javascript", "امیر محمد حیدری", "امیر حیدری", "برنامه نویس", "طراح وب"],
+  alternates: {
+    canonical: "/",
+    languages: { "fa-IR": "/", en: "/en", "x-default": "/" },
+  },
   openGraph: {
     title: `${profile.name} — ${profile.role}`,
     description: profile.heroSubtext,
@@ -36,11 +49,7 @@ export const viewport: Viewport = {
   themeColor: "#071416",
 };
 
-export default function RootLayout({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
+export default function FaRootLayout({ children }: { children: React.ReactNode }) {
   const personJsonLd = {
     "@context": "https://schema.org",
     "@type": "Person",
@@ -59,15 +68,10 @@ export default function RootLayout({
           // eslint-disable-next-line react/no-danger
           dangerouslySetInnerHTML={{ __html: JSON.stringify(personJsonLd) }}
         />
-        {/* <a
-          href="#hero"
-          className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-50 focus:rounded-full focus:bg-turquoise focus:px-4 focus:py-2 focus:text-sm focus:font-bold focus:text-bed"
-        >
-          رفتن به محتوای اصلی
-        </a> */}
         <Aurora />
         <ChronoSpine />
-        <SectionNav />
+        <SectionNav ui={ui} />
+        <LanguageToggle href="/en" label={ui.languageToggle} />
         {children}
       </body>
     </html>

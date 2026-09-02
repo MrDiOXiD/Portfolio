@@ -7,6 +7,7 @@ import { AnimatePresence, motion } from "framer-motion";
 import { ChevronRight, ChevronLeft, X } from "lucide-react";
 import { profile } from "@/content/profile";
 import { Reveal } from "@/components/ui/Reveal";
+import { BLUR_DATA_URL } from "@/lib/blur";
 
 export function Gallery() {
   const [emblaRef, emblaApi] = useEmblaCarousel({
@@ -60,16 +61,17 @@ export function Gallery() {
                   type="button"
                   key={photo.src}
                   onClick={() => setLightbox(i)}
-                  className="panel relative aspect-[4/5] w-[260px] flex-none overflow-hidden p-0 transition-transform duration-300 hover:-translate-y-1 sm:w-[300px]"
+                  className="panel relative aspect-[4/5] w-[260px] flex-none overflow-hidden bg-panel2 p-0 transition-transform duration-300 hover:-translate-y-1 sm:w-[300px]"
                 >
                   <Image
                     src={photo.src}
                     alt={photo.alt}
                     fill
-                    sizes="300px"
-                    // className="panel relative aspect-[4/5] w-[260px] flex-none overflow-hidden bg-panel2 p-0 transition-transform duration-300 hover:-translate-y-1 sm:w-[300px]"
-                    className="object-center"
-                  // or object-center / object-bottom
+                    loading="lazy"
+                    placeholder="blur"
+                    blurDataURL={BLUR_DATA_URL}
+                    sizes="(min-width: 640px) 300px, 260px"
+                    className="object-contain"
                   />
                 </button>
               ))}
@@ -94,12 +96,20 @@ export function Gallery() {
               className="relative aspect-[4/5] w-full max-w-md"
               onClick={(e) => e.stopPropagation()}
             >
-              <Image src={active.src} alt={active.alt} fill sizes="480px" className="rounded-[24px] object-cover" />
+              <Image
+                src={active.src}
+                alt={active.alt}
+                fill
+                sizes="480px"
+                placeholder="blur"
+                blurDataURL={BLUR_DATA_URL}
+                className="rounded-[24px] object-contain"
+              />
               <button
                 type="button"
                 onClick={() => setLightbox(null)}
                 aria-label="بستن"
-                className="object-center"
+                className="absolute -top-4 start-4 rounded-full bg-panel p-2 text-mist"
               >
                 <X size={18} />
               </button>

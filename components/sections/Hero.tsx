@@ -1,9 +1,14 @@
-"use client";
-
 import Image from "next/image";
-import { motion } from "framer-motion";
 import { ArrowDownLeft, Mail } from "lucide-react";
 import { profile } from "@/content/profile";
+import { BLUR_DATA_URL } from "@/lib/blur";
+
+// This is a plain Server Component — no "use client", no framer-motion.
+// The very first thing a visitor sees should not have to wait on JS
+// hydration to become visible, so every entrance effect here is a CSS
+// @keyframes animation (see tailwind.config.ts: fade-up / fade-scale /
+// fade-in). CSS animations start the moment the browser paints, whether
+// or not React has hydrated yet — that's the whole optimization.
 
 export function Hero() {
   return (
@@ -14,82 +19,73 @@ export function Hero() {
       <div className="mx-auto grid w-full max-w-6xl grid-cols-1 items-center gap-14 md:grid-cols-[1.2fr_0.8fr]">
         {/* متن اصلی */}
         <div>
-          <motion.div
-            initial={{ opacity: 0, y: 14 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6 }}
-            className="mb-6 inline-flex items-center gap-3 rounded-full border border-hairline bg-panel2/70 px-4 py-1.5"
-          >
+          <div className="mb-6 inline-flex items-center gap-3 rounded-full border border-hairline bg-panel2/70 px-4 py-1.5 motion-safe:animate-fade-up">
             <span className="h-2 w-2 animate-pulse rounded-full bg-turquoise" />
             <span className="text-sm text-muted">{profile.status}</span>
-          </motion.div>
+          </div>
 
+          {/* هدینگ اصلی صفحه — عمداً بدون تأخیر انیمیشنی زیاد، چون بزرگ‌ترین
+              عنصر بالای تاشدگی است و معیار LCP روی همین اندازه‌گیری می‌شود. */}
           <h1 className="max-w-2xl text-4xl font-extrabold leading-[1.28] tracking-tight text-mist sm:text-5xl md:text-6xl">
             {profile.heroHeadline.map((line, i) => (
-              <motion.span
+              <span
                 key={line}
-                initial={{ opacity: 0, y: 26 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.7, delay: 0.15 + i * 0.12, ease: [0.16, 1, 0.3, 1] }}
-                className="block"
+                style={{ animationDelay: `${100 + i * 90}ms` }}
+                className="block motion-safe:animate-fade-up"
               >
                 {i === 1 ? <span className="text-turquoise">{line}</span> : line}
-              </motion.span>
+              </span>
             ))}
           </h1>
 
-          <motion.p
-            initial={{ opacity: 0, y: 18 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.7, delay: 0.55 }}
-            className="mt-7 max-w-xl text-base leading-8 text-muted sm:text-lg"
+          <p
+            style={{ animationDelay: "320ms" }}
+            className="mt-7 max-w-xl text-base leading-8 text-muted motion-safe:animate-fade-up sm:text-lg"
           >
             {profile.heroSubtext}
-          </motion.p>
+          </p>
 
-          <motion.div
-            initial={{ opacity: 0, y: 18 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.7, delay: 0.7 }}
-            className="mt-10 flex flex-wrap items-center gap-4"
+          <div
+            style={{ animationDelay: "420ms" }}
+            className="mt-10 flex flex-wrap items-center gap-4 motion-safe:animate-fade-up"
           >
             <a href="#about" className="btn-primary">
               بیشتر درباره‌ام بخوان
               <ArrowDownLeft size={16} />
             </a>
-            <a href="tel:+989121318937" className="btn-ghost">
+            <a href={`mailto:${profile.contact.email}`} className="btn-ghost">
               <Mail size={16} />
               تماس مستقیم
             </a>
-          </motion.div>
+          </div>
 
-          {/* خط وضعیت، یادگاری از هویت ترمینالی نسخه‌ی اول، این‌بار به‌عنوان یک جزئیات کوچک */}
-          <motion.p
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: 0.8, delay: 1 }}
-            className="ltr eyebrow mt-12 text-muted"
+          <p
+            style={{ animationDelay: "550ms" }}
+            className="ltr eyebrow mt-12 text-muted motion-safe:animate-fade-in"
           >
             {profile.handle}@github ~ {profile.terminalLine}
             <span className="ms-1 inline-block h-3.5 w-[7px] translate-y-[2px] animate-pulse bg-turquoise/80 align-middle" />
-          </motion.p>
+          </p>
         </div>
 
-        {/* پرتره */}
-        <motion.div
-          initial={{ opacity: 0, scale: 0.94 }}
-          animate={{ opacity: 1, scale: 1 }}
-          transition={{ duration: 0.8, delay: 0.25, ease: [0.16, 1, 0.3, 1] }}
-          className="relative mx-auto aspect-[4/5] w-full max-w-sm"
+        {/* پرتره — بزرگ‌ترین قاب صفحه و کاندید اصلی LCP، برای همین:
+            - priority دارد (پیش‌بارگذاری، بدون lazy loading)
+            - انیمیشن ورودش کوتاه و بدون تأخیر است، نه وابسته به JS */}
+        <div
+          style={{ animationDelay: "80ms" }}
+          className="relative mx-auto aspect-[4/5] w-full max-w-sm motion-safe:animate-fade-scale"
         >
           <div className="absolute -inset-4 rounded-[36px] bg-gradient-to-br from-turquoise/25 via-blue/15 to-purple/25 blur-2xl" />
           <div className="panel relative h-full w-full overflow-hidden rounded-[32px] p-2">
             <div className="relative h-full w-full overflow-hidden rounded-[24px]">
               <Image
-                src="/images/profile.png"
+                src="/images/profile.webp"
                 alt={`عکس پروفایل ${profile.name}`}
                 fill
                 priority
+                fetchPriority="high"
+                placeholder="blur"
+                blurDataURL={BLUR_DATA_URL}
                 sizes="(min-width: 768px) 380px, 80vw"
                 className="object-cover"
               />
@@ -106,7 +102,7 @@ export function Hero() {
               <p className="text-xs text-muted">{profile.role} · {profile.affiliation}</p>
             </div>
           </div>
-        </motion.div>
+        </div>
       </div>
     </section>
   );

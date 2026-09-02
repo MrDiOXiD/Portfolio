@@ -2,12 +2,15 @@ import dynamic from "next/dynamic";
 import { Hero } from "@/components/sections/Hero";
 import { About } from "@/components/sections/About";
 import { SectionSkeleton } from "@/components/ui/SectionSkeleton";
+import { profiles, uiStrings } from "@/content/profile";
+
+const profile = profiles.fa;
+const ui = uiStrings.fa;
 
 // Everything below the fold is code-split into its own JS chunk via
-// next/dynamic. `ssr: true` (the default) keeps full server-rendered HTML
-// for SEO and no-JS visitors — this only changes how the *client* fetches
-// the JS needed to hydrate each section, so the Hero's chunk stays small
-// and isn't competing with embla-carousel / framer-motion parsing on load.
+// next/dynamic. ssr stays on (the default) so the full HTML is still
+// server-rendered for SEO and no-JS visitors — this only changes how the
+// *client* fetches the JS needed to hydrate each section.
 const Timeline = dynamic(() => import("@/components/sections/Timeline").then((m) => m.Timeline), {
   loading: () => <SectionSkeleton heightClass="h-[520px]" />,
 });
@@ -27,13 +30,13 @@ const Contact = dynamic(() => import("@/components/sections/Contact").then((m) =
 export default function Home() {
   return (
     <main>
-      <Hero />
-      <About />
-      <Timeline />
-      <Projects />
-      <Gallery />
-      <NextPlans />
-      <Contact />
+      <Hero profile={profile} ui={ui} />
+      <About profile={profile} />
+      <Timeline profile={profile} />
+      <Projects profile={profile} />
+      <Gallery profile={profile} ui={ui} locale="fa" />
+      <NextPlans profile={profile} />
+      <Contact profile={profile} ui={ui} />
     </main>
   );
 }
