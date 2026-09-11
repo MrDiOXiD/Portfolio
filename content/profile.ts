@@ -73,7 +73,7 @@ const galleryImages: { src: string; alt: { fa: string; en: string } }[] = [
 ];
 
 const fa: Profile = {
-  name: "امیر محمد حیدری",
+  name: " امیر محمد حیدری خوئی",
   handle: "Amir Mohammad Heydari",
   role: " ( برنامه نویس )توسعه‌دهنده فول‌استک -full stack (programmer) ",
   affiliation: "هم‌بنیان‌گذار تیم ChatraTech",
