@@ -22,7 +22,7 @@ export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
   title: `${profile.name} — ${profile.role}`,
   description: profile.googleIndexDescription,
-  keywords: [profile.name, profile.role, "Next.js", "Full-Stack Developer", "پورتفولیو", "توسعه‌دهنده فول‌استک", "NestJs", "typescript", "javascript", "امیر محمد حیدری", "امیر حیدری", "برنامه نویس", "طراح وب"],
+  keywords: [profile.name, profile.role, "Next.js", "Full-Stack Developer", "پورتفولیو", "توسعه‌دهنده فول‌استک", "NestJs", "typescript", "javascript", "امیر محمد حیدری", "امیر حیدری", "برنامه نویس", "طراح وب","امیر محمد حیدری خوئی"،"امیر محمد حیدری خویی"],
   alternates: {
     canonical: "/",
     languages: { "fa-IR": "/", en: "/en", "x-default": "/" },
